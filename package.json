@@ -1,0 +1,58 @@
+{
+	"name": "shadcn-zod-form",
+	"version": "0.0.1",
+	"description": "Generate shadcn/ui forms from zod schemas",
+	"publishConfig": {
+		"access": "public"
+	},
+	"files": ["dist"],
+	"type": "module",
+	"author": {
+		"name": "ilyichv",
+		"url": "https://x.com/ilyichv_"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ilyichv/shadcn-zod-form.git"
+	},
+	"keywords": ["shadcn", "zod", "form", "ui", "cli", "react"],
+	"exports": "./dist/index.js",
+	"bin": "./dist/index.js",
+	"scripts": {
+		"dev": "tsup --watch",
+		"build": "tsup",
+		"typecheck": "tsc --noEmit",
+		"lint": "pnpm biome check src"
+	},
+	"license": "MIT",
+	"devDependencies": {
+		"@biomejs/biome": "1.8.3",
+		"@changesets/changelog-github": "^0.5.0",
+		"@changesets/cli": "^2.27.8",
+		"@types/fs-extra": "^11.0.4",
+		"@types/lodash.camelcase": "^4.3.9",
+		"@types/lodash.kebabcase": "^4.1.9",
+		"@types/lodash.startcase": "^4.4.9",
+		"@types/lodash.template": "^4.5.3",
+		"@types/node": "^22.5.4",
+		"@types/prompts": "^2.4.9",
+		"tsup": "^8.2.4",
+		"type-fest": "^4.26.1",
+		"typescript": "^5.5.4"
+	},
+	"dependencies": {
+		"chalk": "^5.3.0",
+		"commander": "^12.1.0",
+		"cosmiconfig": "^9.0.0",
+		"fs-extra": "^11.2.0",
+		"lodash.camelcase": "^4.3.0",
+		"lodash.kebabcase": "^4.1.1",
+		"lodash.startcase": "^4.4.0",
+		"lodash.template": "^4.5.0",
+		"ora": "^8.1.0",
+		"prompts": "^2.4.2",
+		"ts-morph": "^23.0.0",
+		"tsconfig-paths": "^4.2.0",
+		"zod": "^3.23.8"
+	}
+}
