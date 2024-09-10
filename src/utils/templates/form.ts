@@ -15,18 +15,18 @@ import {
   FormMessage,
 } from "@/registry/ui/form"
 
-const formSchema = <%= schema %>
+const formSchema = <%= schema %>;
 
 export function <%= formName %>() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: <%= defaultValues %>,
-  })
+    defaultValues: {},
+  });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Handle form submission
     console.log(values)
-  }
+  };
 
   return (
     <Form {...form}>

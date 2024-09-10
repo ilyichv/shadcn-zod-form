@@ -1,7 +1,7 @@
 import camelCase from "lodash.camelcase";
 import startCase from "lodash.startcase";
 import template from "lodash.template";
-import type { ParsedSchema, ParsedSchemaValue } from "./discover-zod";
+import type { ParsedSchema, ParsedSchemaValue } from "./parse-zod";
 import { formFieldTemplate } from "./templates/form-field";
 import { inputs, optionItem } from "./templates/inputs";
 
@@ -14,6 +14,10 @@ export function getFormFields(schema: ParsedSchema): {
 	const imports: Set<string> = new Set();
 
 	for (const [key, value] of Object.entries(flattenedSchema)) {
+		if (value.type === "unsupported") {
+			continue;
+		}
+
 		const { component, import: importStatement } = getInputComponent(value);
 		const formField = template(formFieldTemplate)({
 			name: key,
@@ -27,7 +31,7 @@ export function getFormFields(schema: ParsedSchema): {
 
 	return {
 		imports: Array.from(imports).join("\n"),
-		components: components.join("\n"),
+		components: components.join(""),
 	};
 }
 
@@ -62,20 +66,12 @@ function getInputComponent(field: ParsedSchemaValue): {
 } {
 	const input = inputs[field.type];
 
-	if (!input) {
-		return {
-			component: "",
-			import: "",
-		};
-		// throw new Error(`No input component found for type: ${type}`);
-	}
-
 	return {
 		...input,
 		component: template(input.component)({
 			options: field.options
 				?.map((option) => template(optionItem)({ option }))
-				.join(""),
+				.join("\n"),
 		}),
 	};
 }

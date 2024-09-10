@@ -11,5 +11,4 @@ export const formFieldTemplate = `
       <FormMessage />
     </FormItem>
   )}
-/>
-`;
+/>`;
