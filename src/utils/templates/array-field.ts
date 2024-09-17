@@ -10,7 +10,7 @@ export const arrayFieldTemplate = {
 	component: `
 		<div>
 			{fields.map((field, index) => (
-				<div key={field.id} className="flex items-center space-x-2">
+				<div key={field.id} className="flex w-full items-end space-x-2">
 					<%= children %>
 					<Button
 					type="button"
@@ -24,12 +24,13 @@ export const arrayFieldTemplate = {
 			))
 		}
 		<Button
-			size="icon"
-			variant="ghost"
+			size="sm"
+			className="mt-2"
 			type="button"
 			onClick={() => append(<%= defaultValues %>)}
 			>
 				<PlusIcon className="size-4" />
+				<span className="ml-2">Add Item</span>
 			</Button>
 	</div>`,
 };

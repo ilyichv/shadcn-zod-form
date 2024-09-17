@@ -1,4 +1,5 @@
-export const formTemplate = `
+export const formTemplate = `"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
