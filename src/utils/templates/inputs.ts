@@ -1,32 +1,39 @@
-export const inputs: Record<string, { import: string; component: string }> = {
-	string: {
+import { z } from "zod";
+
+export const inputs: Record<
+	string,
+	{
+		import: string;
+		component: string;
+		defaultValue?: string | boolean | number;
+	}
+> = {
+	[z.ZodString.name]: {
 		import: "import { Input } from '@/registry/ui/input';",
 		component: "<Input {...field} />",
+		defaultValue: "",
 	},
-	number: {
+	[z.ZodNumber.name]: {
 		import: "import { Input } from '@/registry/ui/input';",
 		component: "<Input {...field} />",
+		defaultValue: 0,
 	},
-	// todo: implement custom registry datepicker
-	date: {
-		import: "import { Input } from '@/registry/ui/input';",
-		component: "<Input {...field} />",
-	},
-	boolean: {
+	[z.ZodBoolean.name]: {
 		import: "import { Checkbox } from '@/registry/ui/checkbox';",
 		component:
 			"<Checkbox checked={field.value} onCheckedChange={field.onChange} />",
+		defaultValue: false,
 	},
-	enum: {
+	[z.ZodEnum.name]: {
 		import:
 			"import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/registry/ui/select';",
-		component: `<Select>
+		component: `<Select onValueChange={field.onChange} defaultValue={field.value}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Select a value" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <%= options %>
+          <%= children %>
         </SelectGroup>
       </SelectContent>
     </Select>`,

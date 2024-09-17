@@ -40,7 +40,6 @@ export const generate = new Command()
 			}
 
 			const zodSchemas = parseZodSchemasFromFile(config, options.schema);
-			console.log(JSON.stringify(zodSchemas, null, 2));
 
 			if (Object.keys(zodSchemas).length === 0) {
 				logger.error("No Zod schemas found in the specified file.");
@@ -104,7 +103,7 @@ export const generate = new Command()
 				process.exit(1);
 			}
 
-			const { components, imports } = getFormFields(
+			const { components, imports, functions } = getFormFields(
 				zodSchemas[selectedSchema].schema,
 			);
 
@@ -113,8 +112,9 @@ export const generate = new Command()
 					schema: selectedSchema,
 					formName:
 						camelCase(name).charAt(0).toUpperCase() + camelCase(name).slice(1),
+					functions,
 					components,
-					schemaImport: zodSchemas[selectedSchema].importStr,
+					schemaImport: zodSchemas[selectedSchema].import,
 					imports,
 				}),
 				filename: `${name}.tsx`,

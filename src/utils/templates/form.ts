@@ -1,14 +1,13 @@
 export const formTemplate = `
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import type { z } from "zod";
 <%= schemaImport %>
 <%= imports %>
 import { Button } from "@/registry/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -27,6 +26,8 @@ export function <%= formName %>() {
     // Handle form submission
     console.log(values)
   };
+
+  <%= functions %>
 
   return (
     <Form {...form}>

@@ -1,14 +1,14 @@
-export const formFieldTemplate = `
-<FormField
+export const formFieldTemplate = `<FormField
   control={form.control}
-  name="<%= name %>"
+  name=<%= name %>
   render={({ field }) => (
     <FormItem>
       <FormLabel><%= label %></FormLabel>
       <FormControl>
-        <%= component %>
+        <%= input %>
       </FormControl>
       <FormMessage />
     </FormItem>
   )}
-/>`;
+/>
+`;
