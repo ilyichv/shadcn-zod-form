@@ -23,11 +23,11 @@ const generateOptionsSchema = z.object({
 export const generate = new Command()
 	.name("generate")
 	.description("Generate shadcn/ui form from zod schema")
-	.option("-s, --schema <path>", "the path to zod schemas folder")
+	.argument("<schema>", "the path to zod schemas folder")
 	.option("-n, --name <name>", "the name of the form")
-	.action(async (opts) => {
+	.action(async (schema, opts) => {
 		try {
-			const options = generateOptionsSchema.parse(opts);
+			const options = generateOptionsSchema.parse({ schema, ...opts });
 			const cwd = process.cwd();
 			const config = await getConfig(cwd);
 			if (!config) {
@@ -82,7 +82,7 @@ export const generate = new Command()
 				).name;
 
 			const spinner = ora(
-				`Generating form for schema: ${selectedSchema} at ${config.resolvedPaths.forms}/${name}.tsx`,
+				`Generating form for schema: ${selectedSchema} at ${config.resolvedPaths.forms}/${name}.tsx\n`,
 			).start();
 
 			const targetDir = config.resolvedPaths.forms;
