@@ -1,5 +1,11 @@
 # shadcn-zod-form
 
+## 0.0.3
+
+### Patch Changes
+
+- [#3](https://github.com/ilyichv/shadcn-zod-form/pull/3) [`e373e52`](https://github.com/ilyichv/shadcn-zod-form/commit/e373e525047920322fb020abca3fd74ed97ed878) Thanks [@ilyichv](https://github.com/ilyichv)! - fix: use argument instead of option
+
 ## 0.0.2
 
 ### Patch Changes
