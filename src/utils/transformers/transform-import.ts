@@ -7,18 +7,13 @@ export const transformImport: Transformer = async ({ sourceFile, config }) => {
 
 	for (const importDeclaration of importDeclarations) {
 		const moduleSpecifier = importDeclaration.getModuleSpecifierValue();
-		console.log(moduleSpecifier);
 
 		// Replace @/registry/ui with the components alias.
 		if (moduleSpecifier.startsWith("@/registry/ui")) {
 			if (config.aliases.ui) {
-				console.log(moduleSpecifier);
-				console.log("ui", config.aliases.ui);
-				console.log("importDeclaration", importDeclaration.getText());
 				importDeclaration.setModuleSpecifier(
 					moduleSpecifier.replace(/^@\/registry\/ui/, config.aliases.ui),
 				);
-				console.log(importDeclaration.getText());
 			} else {
 				importDeclaration.setModuleSpecifier(
 					moduleSpecifier.replace(

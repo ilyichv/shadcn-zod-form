@@ -8,11 +8,11 @@ import template from "lodash.template";
 import ora from "ora";
 import prompts from "prompts";
 import { z } from "zod";
-import { discoverZodSchemas } from "../utils/discover-zod";
 import { getFormFields } from "../utils/form-fields";
 import { getConfig } from "../utils/get-config";
 import { handleError } from "../utils/handle-error";
 import { logger } from "../utils/logger";
+import { parseZodSchemasFromFile } from "../utils/parse-zod";
 import { formTemplate } from "../utils/templates/form";
 import { transform } from "../utils/transformers";
 
@@ -39,7 +39,7 @@ export const generate = new Command()
 				process.exit(1);
 			}
 
-			const zodSchemas = discoverZodSchemas(config, options.schema);
+			const zodSchemas = parseZodSchemasFromFile(config, options.schema);
 
 			if (Object.keys(zodSchemas).length === 0) {
 				logger.error("No Zod schemas found in the specified file.");
@@ -103,7 +103,7 @@ export const generate = new Command()
 				process.exit(1);
 			}
 
-			const { components, imports } = getFormFields(
+			const { components, imports, functions } = getFormFields(
 				zodSchemas[selectedSchema].schema,
 			);
 
@@ -112,9 +112,9 @@ export const generate = new Command()
 					schema: selectedSchema,
 					formName:
 						camelCase(name).charAt(0).toUpperCase() + camelCase(name).slice(1),
-					defaultValues: "{}",
+					functions,
 					components,
-					schemaImport: zodSchemas[selectedSchema].importStr,
+					schemaImport: zodSchemas[selectedSchema].import,
 					imports,
 				}),
 				filename: `${name}.tsx`,
