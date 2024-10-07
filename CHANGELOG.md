@@ -1,5 +1,11 @@
 # shadcn-zod-form
 
+## 0.0.4
+
+### Patch Changes
+
+- [#5](https://github.com/ilyichv/shadcn-zod-form/pull/5) [`8a91754`](https://github.com/ilyichv/shadcn-zod-form/commit/8a91754ae95a6a4eacc929b6fea281c6a592c9f5) Thanks [@ilyichv](https://github.com/ilyichv)! - feat: add output option
+
 ## 0.0.3
 
 ### Patch Changes
