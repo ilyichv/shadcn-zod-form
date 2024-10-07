@@ -18,6 +18,8 @@ import { transform } from "../utils/transformers";
 
 const generateOptionsSchema = z.object({
 	schema: z.string().describe("the path to zod schemas folder"),
+	name: z.string().optional().describe("the name of the form"),
+	output: z.string().optional().describe("the output directory"),
 });
 
 export const generate = new Command()
@@ -25,6 +27,7 @@ export const generate = new Command()
 	.description("Generate shadcn/ui form from zod schema")
 	.argument("<schema>", "the path to zod schemas folder")
 	.option("-n, --name <name>", "the name of the form")
+	.option("-o, --output <output>", "the output directory")
 	.action(async (schema, opts) => {
 		try {
 			const options = generateOptionsSchema.parse({ schema, ...opts });
@@ -68,7 +71,7 @@ export const generate = new Command()
 			}
 
 			const name =
-				opts.name ||
+				options.name ||
 				(
 					await prompts({
 						type: "text",
@@ -85,7 +88,7 @@ export const generate = new Command()
 				`Generating form for schema: ${selectedSchema} at ${config.resolvedPaths.forms}/${name}.tsx\n`,
 			).start();
 
-			const targetDir = config.resolvedPaths.forms;
+			const targetDir = options.output || config.resolvedPaths.forms;
 
 			if (!existsSync(targetDir)) {
 				await fs.mkdir(targetDir, { recursive: true });
@@ -98,7 +101,7 @@ export const generate = new Command()
 			if (existingComponent) {
 				spinner.stop();
 				logger.warn(
-					`Form: ${selectedSchema} already exists. Please chose another name.`,
+					`File ${name}.tsx already exists. Please chose another name.`,
 				);
 				process.exit(1);
 			}
