@@ -1,6 +1,6 @@
 {
 	"name": "shadcn-zod-form",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "Generate shadcn/ui forms from zod schemas",
 	"publishConfig": {
 		"access": "public"
