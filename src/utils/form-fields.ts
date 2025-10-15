@@ -2,10 +2,9 @@ import camelCase from "lodash.camelcase";
 import startCase from "lodash.startcase";
 import template from "lodash.template";
 import { z } from "zod";
+import { getDefaultValues } from "./default-values";
 import { logger } from "./logger";
-import { arrayFieldTemplate } from "./templates/array-field";
-import { formFieldTemplate } from "./templates/form-field";
-import { inputs, optionItem } from "./templates/inputs";
+import type { PackageConfig } from "./packages";
 
 type FormFieldsResult = {
 	imports: string;
@@ -13,12 +12,15 @@ type FormFieldsResult = {
 	functions: string;
 };
 
-export function getFormFields(schema: z.ZodTypeAny): FormFieldsResult {
+export function getFormFields(
+	schema: z.ZodTypeAny,
+	packageConfig: PackageConfig,
+): FormFieldsResult {
 	const components: string[] = [];
 	const functions: string[] = [];
 	const imports: Set<string> = new Set();
 
-	processSchema(schema, "", components, imports, functions);
+	processSchema(packageConfig, schema, "", components, imports, functions);
 
 	return {
 		imports: Array.from(imports)
@@ -30,6 +32,7 @@ export function getFormFields(schema: z.ZodTypeAny): FormFieldsResult {
 }
 
 function processSchema(
+	packageConfig: PackageConfig,
 	schema: z.ZodTypeAny,
 	prefix = "",
 	components: string[] = [],
@@ -38,6 +41,7 @@ function processSchema(
 ): FormFieldsResult {
 	if (schema instanceof z.ZodNullable || schema instanceof z.ZodOptional) {
 		return processSchema(
+			packageConfig,
 			schema.unwrap(),
 			prefix,
 			components,
@@ -47,15 +51,30 @@ function processSchema(
 	}
 
 	if (schema instanceof z.ZodObject) {
-		return processObjectSchema(schema, prefix, components, imports, functions);
+		return processObjectSchema(
+			packageConfig,
+			schema,
+			prefix,
+			components,
+			imports,
+			functions,
+		);
 	}
 
 	if (schema instanceof z.ZodArray) {
-		return processArraySchema(schema, prefix, components, imports, functions);
+		return processArraySchema(
+			packageConfig,
+			schema,
+			prefix,
+			components,
+			imports,
+			functions,
+		);
 	}
 
 	// Process primitive types
 	const { component, import: importStatement } = getInputComponent(
+		packageConfig,
 		schema,
 		prefix,
 	);
@@ -70,6 +89,7 @@ function processSchema(
 }
 
 function processObjectSchema(
+	packageConfig: PackageConfig,
 	schema: z.ZodObject<z.ZodRawShape>,
 	prefix: string,
 	components: string[],
@@ -79,6 +99,7 @@ function processObjectSchema(
 	for (const [key, value] of Object.entries(schema.shape)) {
 		const newKey = prefix ? `${prefix}.${key}` : key;
 		processSchema(
+			packageConfig,
 			value as z.ZodTypeAny,
 			newKey,
 			components,
@@ -95,6 +116,7 @@ function processObjectSchema(
 }
 
 function processArraySchema(
+	packageConfig: PackageConfig,
 	schema: z.ZodArray<z.ZodTypeAny>,
 	prefix: string,
 	components: string[],
@@ -103,25 +125,28 @@ function processArraySchema(
 ): FormFieldsResult {
 	if (schema.element instanceof z.ZodObject) {
 		const { components: children } = processSchema(
+			packageConfig,
 			schema.element,
-			`${prefix}.\${index}`,
+			packageConfig.prefix(prefix),
 		);
 
-		const defaultValues = getObjectDefaultValue(schema.element);
-		const arrayFieldComponent = template(arrayFieldTemplate.component)({
+		const defaultValues = getDefaultValues(schema.element);
+		const arrayFieldComponent = template(
+			packageConfig.templates.arrayField.component,
+		)({
 			children,
-			defaultValues: JSON.stringify(defaultValues).replace(
-				/"([^"]+)":/g,
-				"$1:",
-			),
+			name: prefix,
+			defaultValues: JSON.stringify(defaultValues),
 		});
 
-		const arrayFieldFunctions = template(arrayFieldTemplate.functions)({
+		const arrayFieldFunctions = template(
+			packageConfig.templates.arrayField.functions,
+		)({
 			name: prefix,
 		});
 
 		components.push(arrayFieldComponent);
-		imports.add(arrayFieldTemplate.import);
+		imports.add(packageConfig.templates.arrayField.import);
 		functions.push(arrayFieldFunctions);
 	} else {
 		logger.warn(`Only objects are supported in arrays, skipping ${prefix}`);
@@ -135,13 +160,14 @@ function processArraySchema(
 }
 
 function getInputComponent(
+	packageConfig: PackageConfig,
 	field: z.ZodTypeAny,
 	prefix: string,
 ): {
 	component: string;
 	import: string;
 } {
-	const input = inputs[field.constructor.name];
+	const input = packageConfig.templates.inputs[field.constructor.name];
 	const inputProps = {
 		children: "",
 	};
@@ -156,7 +182,9 @@ function getInputComponent(
 
 	if (field instanceof z.ZodEnum) {
 		inputProps.children = field.options
-			.map((option: string) => template(optionItem)({ option }))
+			.map((option: string) =>
+				template(packageConfig.templates.optionItem)({ option }),
+			)
 			.join("\n");
 	}
 
@@ -164,7 +192,7 @@ function getInputComponent(
 
 	return {
 		...input,
-		component: template(formFieldTemplate)({
+		component: template(packageConfig.templates.field)({
 			name,
 			label: getFieldLabel(prefix),
 			input: template(input.component)(inputProps),
@@ -175,20 +203,4 @@ function getInputComponent(
 function getFieldLabel(key: string): string {
 	const parts = key.includes(".") ? key.split(".") : [key];
 	return parts.map((part) => startCase(camelCase(part))).join(" ");
-}
-
-function getObjectDefaultValue(
-	field: z.ZodObject<z.ZodRawShape>,
-): Record<string, unknown> {
-	// todo: make recursive ?
-	const defaultValues: Record<string, unknown> = {};
-
-	for (const [key, value] of Object.entries(field.shape)) {
-		const defaultValue = inputs[value.constructor.name]?.defaultValue;
-		if (typeof defaultValue !== "undefined") {
-			defaultValues[key] = defaultValue;
-		}
-	}
-
-	return defaultValues;
 }

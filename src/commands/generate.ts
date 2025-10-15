@@ -8,18 +8,23 @@ import template from "lodash.template";
 import ora from "ora";
 import prompts from "prompts";
 import { z } from "zod";
+import { getDefaultValues } from "../utils/default-values";
+import { detectFormPackage } from "../utils/detect-form-pacakge";
 import { getFormFields } from "../utils/form-fields";
 import { getConfig } from "../utils/get-config";
 import { handleError } from "../utils/handle-error";
 import { logger } from "../utils/logger";
+import { packageConfigs } from "../utils/packages";
 import { parseZodSchemasFromFile } from "../utils/parse-zod";
-import { formTemplate } from "../utils/templates/form";
 import { transform } from "../utils/transformers";
 
 const generateOptionsSchema = z.object({
 	schema: z.string().describe("the path to zod schemas folder"),
 	name: z.string().optional().describe("the name of the form"),
 	output: z.string().optional().describe("the output directory"),
+	form: z
+		.enum(["react-hook-form", "@tanstack/react-form"])
+		.describe("the form package to use"),
 });
 
 export const generate = new Command()
@@ -28,11 +33,19 @@ export const generate = new Command()
 	.argument("<schema>", "the path to zod schemas folder")
 	.option("-n, --name <name>", "the name of the form")
 	.option("-o, --output <output>", "the output directory")
+	.option("-f, --package <package>", "the form package to use")
 	.action(async (schema, opts) => {
 		try {
-			const options = generateOptionsSchema.parse({ schema, ...opts });
 			const cwd = process.cwd();
 			const config = await getConfig(cwd);
+			const formPackage = opts.package ?? (await detectFormPackage());
+
+			const options = generateOptionsSchema.parse({
+				schema,
+				...opts,
+				form: formPackage,
+			});
+
 			if (!config) {
 				logger.warn(
 					`Configuration is missing. Please run ${chalk.green(
@@ -42,6 +55,8 @@ export const generate = new Command()
 				process.exit(1);
 			}
 
+			const packageConfig =
+				packageConfigs[options.form as keyof typeof packageConfigs];
 			const zodSchemas = parseZodSchemasFromFile(config, options.schema);
 
 			if (Object.keys(zodSchemas).length === 0) {
@@ -108,10 +123,16 @@ export const generate = new Command()
 
 			const { components, imports, functions } = getFormFields(
 				zodSchemas[selectedSchema].schema,
+				packageConfig,
 			);
 
+			const defaultValues = getDefaultValues(zodSchemas[selectedSchema].schema);
+
+			spinner.stop();
+
 			const content = await transform({
-				raw: template(formTemplate)({
+				raw: template(packageConfig.templates.form)({
+					defaultValues: JSON.stringify(defaultValues),
 					schema: selectedSchema,
 					formName:
 						camelCase(name).charAt(0).toUpperCase() + camelCase(name).slice(1),
