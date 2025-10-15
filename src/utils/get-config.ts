@@ -25,6 +25,7 @@ export const initializedConfigSchema = shadcnConfigSchema.extend({
 	aliases: aliasesSchema.extend({
 		form: z.string(),
 	}),
+	form: z.enum(["react-hook-form", "@tanstack/react-form"]).optional(),
 });
 
 export type InitializedConfig = z.infer<typeof initializedConfigSchema>;
@@ -33,6 +34,7 @@ export const configSchema = shadcnConfigSchema.extend({
 	resolvedPaths: z.object({
 		forms: z.string(),
 	}),
+	form: z.enum(["react-hook-form", "@tanstack/react-form"]).optional(),
 });
 
 export type Config = z.infer<typeof configSchema>;
@@ -85,7 +87,7 @@ export async function getShadcnConfig(cwd: string) {
 	return shadcnConfigSchema.parse(config);
 }
 
-export async function getInitializedConfig(cwd: string) {
+async function getInitializedConfig(cwd: string) {
 	const config = await getRawConfig(cwd);
 	return config ? initializedConfigSchema.parse(config) : null;
 }
