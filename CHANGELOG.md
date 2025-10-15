@@ -1,5 +1,11 @@
 # shadcn-zod-form
 
+## 0.1.0
+
+### Minor Changes
+
+- [#8](https://github.com/ilyichv/shadcn-zod-form/pull/8) [`669bd1a`](https://github.com/ilyichv/shadcn-zod-form/commit/669bd1ae0c4f1e3dfcc6e75088ca5920c4123f20) Thanks [@ilyichv](https://github.com/ilyichv)! - add support for Field component
+
 ## 0.0.4
 
 ### Patch Changes
