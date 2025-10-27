@@ -1,0 +1,2193 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Comprehensive Code Generation Tests > @tanstack/react-form > should generate form for array field 1`] = `
+"\\"use client\\";
+
+import { useForm } from \\"@tanstack/react-form\\"
+import { ArraySchema } from \\"./schemas\\";
+import { XIcon, PlusIcon } from \\"lucide-react\\";
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+    FieldSet,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = ArraySchema;
+
+export function ArrayField() {
+    const form = useForm({
+        defaultValues: { \\"items\\": [{ \\"name\\": \\"\\", \\"value\\": 0 }] },
+        validators: {
+            onSubmit: formSchema,
+        },
+        onSubmit: async ({ value }) => {
+            // Handle form submission
+            console.log(value)
+        }
+    });
+
+
+
+    return (
+        <form
+            onSubmit={(e) => {
+                e.preventDefault()
+                form.handleSubmit()
+            }}
+            className=\\"space-y-8\\"
+        >
+            <FieldGroup>
+
+                <form.Field
+                    name=\\"items\\"
+                    mode=\\"array\\"
+                    children={(field) => {
+                        return (<FieldSet>
+                            <FieldGroup>
+                                {field.state.value.map((_, index) => (
+                                    <div key={index} className=\\"flex w-full items-end space-x-2\\">
+                                        <form.Field
+                                            name={\`items[\${index}].name\`}
+                                            children={(field) => {
+                                                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                                                return (<Field data-invalid={isInvalid}>
+                                                    <FieldLabel htmlFor={field.name}>Items Index Name</FieldLabel>
+                                                    <Input
+                                                        name={field.name}
+                                                        value={field.state.value}
+                                                        onBlur={field.handleBlur}
+                                                        onChange={(e) => field.handleChange(e.target.value)}
+                                                        aria-invalid={isInvalid}
+                                                    />
+                                                    {isInvalid && (
+                                                        <FieldError errors={field.state.meta.errors} />
+                                                    )}
+                                                </Field>)
+                                            }}
+                                        />
+                                        <form.Field
+                                            name={\`items[\${index}].value\`}
+                                            children={(field) => {
+                                                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                                                return (<Field data-invalid={isInvalid}>
+                                                    <FieldLabel htmlFor={field.name}>Items Index Value</FieldLabel>
+                                                    <Input
+                                                        type='number'
+                                                        name={field.name}
+                                                        value={field.state.value}
+                                                        onBlur={field.handleBlur}
+                                                        onChange={(e) => field.handleChange(Number(e.target.value))}
+                                                        aria-invalid={isInvalid}
+                                                    />
+                                                    {isInvalid && (
+                                                        <FieldError errors={field.state.meta.errors} />
+                                                    )}
+                                                </Field>)
+                                            }}
+                                        />
+
+                                        <Button
+                                            type=\\"button\\"
+                                            size=\\"icon\\"
+                                            variant=\\"ghost\\"
+                                            onClick={() => field.removeValue(index)}
+                                        >
+                                            <XIcon className=\\"size-4\\" />
+                                        </Button>
+                                    </div>
+                                ))}
+                            </FieldGroup>
+                            <Button
+                                size=\\"sm\\"
+                                className=\\"mt-2\\"
+                                type=\\"button\\"
+                                onClick={() => field.pushValue({ \\"name\\": \\"\\", \\"value\\": 0 })}
+                            >
+                                <PlusIcon className=\\"size-4\\" />
+                                <span className=\\"ml-2\\">Add Item</span>
+                            </Button>
+                        </FieldSet>
+                        )
+                    }}
+                />
+
+
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > @tanstack/react-form > should generate form for boolean field 1`] = `
+"\\"use client\\";
+
+import { useForm } from \\"@tanstack/react-form\\"
+import { BooleanSchema } from \\"./schemas\\";
+import { Checkbox } from '@/registry/ui/checkbox';
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+    FieldSet,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = BooleanSchema;
+
+export function BooleanField() {
+    const form = useForm({
+        defaultValues: { \\"isActive\\": false },
+        validators: {
+            onSubmit: formSchema,
+        },
+        onSubmit: async ({ value }) => {
+            // Handle form submission
+            console.log(value)
+        }
+    });
+
+
+
+    return (
+        <form
+            onSubmit={(e) => {
+                e.preventDefault()
+                form.handleSubmit()
+            }}
+            className=\\"space-y-8\\"
+        >
+            <FieldGroup>
+                <form.Field
+                    name=\\"isActive\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Is Active</FieldLabel>
+                            <Checkbox name={field.name} checked={field.state.value} onCheckedChange={field.handleChange} />
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > @tanstack/react-form > should generate form for complex schema 1`] = `
+"\\"use client\\";
+
+import { useForm } from \\"@tanstack/react-form\\"
+import { ComplexSchema } from \\"./schemas\\";
+import { Input } from '@/registry/ui/input';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/registry/ui/select';
+import { XIcon, PlusIcon } from \\"lucide-react\\";
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+    FieldSet,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = ComplexSchema;
+
+export function ComplexForm() {
+    const form = useForm({
+        defaultValues: { \\"title\\": \\"\\", \\"category\\": \\"\\", \\"tags\\": [\\"\\"], \\"author\\": { \\"name\\": \\"\\", \\"email\\": \\"\\" }, \\"metadata\\": [{ \\"key\\": \\"\\", \\"value\\": \\"\\", \\"type\\": \\"\\" }] },
+        validators: {
+            onSubmit: formSchema,
+        },
+        onSubmit: async ({ value }) => {
+            // Handle form submission
+            console.log(value)
+        }
+    });
+
+
+
+    return (
+        <form
+            onSubmit={(e) => {
+                e.preventDefault()
+                form.handleSubmit()
+            }}
+            className=\\"space-y-8\\"
+        >
+            <FieldGroup>
+                <form.Field
+                    name=\\"title\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Title</FieldLabel>
+                            <Input
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(e.target.value)}
+                                aria-invalid={isInvalid}
+                            />
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+                <form.Field
+                    name=\\"description\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Description</FieldLabel>
+                            <Input
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(e.target.value)}
+                                aria-invalid={isInvalid}
+                            />
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+                <form.Field
+                    name=\\"category\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Category</FieldLabel>
+                            <Select
+                                name={field.name}
+                                value={field.state.value}
+                                onValueChange={field.handleChange}>
+                                <SelectTrigger aria-invalid={isInvalid} className=\\"w-[180px]\\">
+                                    <SelectValue placeholder=\\"Select a value\\" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectItem value='tech'>tech</SelectItem>
+                                        <SelectItem value='business'>business</SelectItem>
+                                        <SelectItem value='lifestyle'>lifestyle</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+                <form.Field
+                    name=\\"author.name\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Author Name</FieldLabel>
+                            <Input
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(e.target.value)}
+                                aria-invalid={isInvalid}
+                            />
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+                <form.Field
+                    name=\\"author.email\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Author Email</FieldLabel>
+                            <Input
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(e.target.value)}
+                                aria-invalid={isInvalid}
+                            />
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+                <form.Field
+                    name=\\"author.bio\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Author Bio</FieldLabel>
+                            <Input
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(e.target.value)}
+                                aria-invalid={isInvalid}
+                            />
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+
+                <form.Field
+                    name=\\"metadata\\"
+                    mode=\\"array\\"
+                    children={(field) => {
+                        return (<FieldSet>
+                            <FieldGroup>
+                                {field.state.value.map((_, index) => (
+                                    <div key={index} className=\\"flex w-full items-end space-x-2\\">
+                                        <form.Field
+                                            name={\`metadata[\${index}].key\`}
+                                            children={(field) => {
+                                                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                                                return (<Field data-invalid={isInvalid}>
+                                                    <FieldLabel htmlFor={field.name}>Metadata Index Key</FieldLabel>
+                                                    <Input
+                                                        name={field.name}
+                                                        value={field.state.value}
+                                                        onBlur={field.handleBlur}
+                                                        onChange={(e) => field.handleChange(e.target.value)}
+                                                        aria-invalid={isInvalid}
+                                                    />
+                                                    {isInvalid && (
+                                                        <FieldError errors={field.state.meta.errors} />
+                                                    )}
+                                                </Field>)
+                                            }}
+                                        />
+                                        <form.Field
+                                            name={\`metadata[\${index}].value\`}
+                                            children={(field) => {
+                                                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                                                return (<Field data-invalid={isInvalid}>
+                                                    <FieldLabel htmlFor={field.name}>Metadata Index Value</FieldLabel>
+                                                    <Input
+                                                        name={field.name}
+                                                        value={field.state.value}
+                                                        onBlur={field.handleBlur}
+                                                        onChange={(e) => field.handleChange(e.target.value)}
+                                                        aria-invalid={isInvalid}
+                                                    />
+                                                    {isInvalid && (
+                                                        <FieldError errors={field.state.meta.errors} />
+                                                    )}
+                                                </Field>)
+                                            }}
+                                        />
+                                        <form.Field
+                                            name={\`metadata[\${index}].type\`}
+                                            children={(field) => {
+                                                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                                                return (<Field data-invalid={isInvalid}>
+                                                    <FieldLabel htmlFor={field.name}>Metadata Index Type</FieldLabel>
+                                                    <Select
+                                                        name={field.name}
+                                                        value={field.state.value}
+                                                        onValueChange={field.handleChange}>
+                                                        <SelectTrigger aria-invalid={isInvalid} className=\\"w-[180px]\\">
+                                                            <SelectValue placeholder=\\"Select a value\\" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectGroup>
+                                                                <SelectItem value='string'>string</SelectItem>
+                                                                <SelectItem value='number'>number</SelectItem>
+                                                                <SelectItem value='boolean'>boolean</SelectItem>
+                                                            </SelectGroup>
+                                                        </SelectContent>
+                                                    </Select>
+                                                    {isInvalid && (
+                                                        <FieldError errors={field.state.meta.errors} />
+                                                    )}
+                                                </Field>)
+                                            }}
+                                        />
+
+                                        <Button
+                                            type=\\"button\\"
+                                            size=\\"icon\\"
+                                            variant=\\"ghost\\"
+                                            onClick={() => field.removeValue(index)}
+                                        >
+                                            <XIcon className=\\"size-4\\" />
+                                        </Button>
+                                    </div>
+                                ))}
+                            </FieldGroup>
+                            <Button
+                                size=\\"sm\\"
+                                className=\\"mt-2\\"
+                                type=\\"button\\"
+                                onClick={() => field.pushValue({ \\"key\\": \\"\\", \\"value\\": \\"\\", \\"type\\": \\"\\" })}
+                            >
+                                <PlusIcon className=\\"size-4\\" />
+                                <span className=\\"ml-2\\">Add Item</span>
+                            </Button>
+                        </FieldSet>
+                        )
+                    }}
+                />
+
+
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > @tanstack/react-form > should generate form for enum field 1`] = `
+"\\"use client\\";
+
+import { useForm } from \\"@tanstack/react-form\\"
+import { EnumSchema } from \\"./schemas\\";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/registry/ui/select';
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+    FieldSet,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = EnumSchema;
+
+export function EnumField() {
+    const form = useForm({
+        defaultValues: { \\"status\\": \\"\\" },
+        validators: {
+            onSubmit: formSchema,
+        },
+        onSubmit: async ({ value }) => {
+            // Handle form submission
+            console.log(value)
+        }
+    });
+
+
+
+    return (
+        <form
+            onSubmit={(e) => {
+                e.preventDefault()
+                form.handleSubmit()
+            }}
+            className=\\"space-y-8\\"
+        >
+            <FieldGroup>
+                <form.Field
+                    name=\\"status\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Status</FieldLabel>
+                            <Select
+                                name={field.name}
+                                value={field.state.value}
+                                onValueChange={field.handleChange}>
+                                <SelectTrigger aria-invalid={isInvalid} className=\\"w-[180px]\\">
+                                    <SelectValue placeholder=\\"Select a value\\" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectItem value='active'>active</SelectItem>
+                                        <SelectItem value='inactive'>inactive</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > @tanstack/react-form > should generate form for nested schema 1`] = `
+"\\"use client\\";
+
+import { useForm } from \\"@tanstack/react-form\\"
+import { NestedSchema } from \\"./schemas\\";
+import { Input } from '@/registry/ui/input';
+import { Checkbox } from '@/registry/ui/checkbox';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/registry/ui/select';
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+    FieldSet,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = NestedSchema;
+
+export function NestedForm() {
+    const form = useForm({
+        defaultValues: { \\"user\\": { \\"name\\": \\"\\", \\"email\\": \\"\\", \\"profile\\": {} }, \\"settings\\": { \\"notifications\\": false, \\"theme\\": \\"\\" } },
+        validators: {
+            onSubmit: formSchema,
+        },
+        onSubmit: async ({ value }) => {
+            // Handle form submission
+            console.log(value)
+        }
+    });
+
+
+
+    return (
+        <form
+            onSubmit={(e) => {
+                e.preventDefault()
+                form.handleSubmit()
+            }}
+            className=\\"space-y-8\\"
+        >
+            <FieldGroup>
+                <form.Field
+                    name=\\"user.name\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>User Name</FieldLabel>
+                            <Input
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(e.target.value)}
+                                aria-invalid={isInvalid}
+                            />
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+                <form.Field
+                    name=\\"user.email\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>User Email</FieldLabel>
+                            <Input
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(e.target.value)}
+                                aria-invalid={isInvalid}
+                            />
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+                <form.Field
+                    name=\\"user.profile.bio\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>User Profile Bio</FieldLabel>
+                            <Input
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(e.target.value)}
+                                aria-invalid={isInvalid}
+                            />
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+                <form.Field
+                    name=\\"user.profile.avatar\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>User Profile Avatar</FieldLabel>
+                            <Input
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(e.target.value)}
+                                aria-invalid={isInvalid}
+                            />
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+                <form.Field
+                    name=\\"settings.notifications\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Settings Notifications</FieldLabel>
+                            <Checkbox name={field.name} checked={field.state.value} onCheckedChange={field.handleChange} />
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+                <form.Field
+                    name=\\"settings.theme\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Settings Theme</FieldLabel>
+                            <Select
+                                name={field.name}
+                                value={field.state.value}
+                                onValueChange={field.handleChange}>
+                                <SelectTrigger aria-invalid={isInvalid} className=\\"w-[180px]\\">
+                                    <SelectValue placeholder=\\"Select a value\\" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectItem value='light'>light</SelectItem>
+                                        <SelectItem value='dark'>dark</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > @tanstack/react-form > should generate form for number field 1`] = `
+"\\"use client\\";
+
+import { useForm } from \\"@tanstack/react-form\\"
+import { NumberSchema } from \\"./schemas\\";
+import { Input } from '@/registry/ui/input';
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+    FieldSet,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = NumberSchema;
+
+export function NumberField() {
+    const form = useForm({
+        defaultValues: { \\"age\\": 0 },
+        validators: {
+            onSubmit: formSchema,
+        },
+        onSubmit: async ({ value }) => {
+            // Handle form submission
+            console.log(value)
+        }
+    });
+
+
+
+    return (
+        <form
+            onSubmit={(e) => {
+                e.preventDefault()
+                form.handleSubmit()
+            }}
+            className=\\"space-y-8\\"
+        >
+            <FieldGroup>
+                <form.Field
+                    name=\\"age\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Age</FieldLabel>
+                            <Input
+                                type='number'
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(Number(e.target.value))}
+                                aria-invalid={isInvalid}
+                            />
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > @tanstack/react-form > should generate form for schema with array 1`] = `
+"\\"use client\\";
+
+import { useForm } from \\"@tanstack/react-form\\"
+import { ArraySchema } from \\"./schemas\\";
+import { Input } from '@/registry/ui/input';
+import { XIcon, PlusIcon } from \\"lucide-react\\";
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+    FieldSet,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = ArraySchema;
+
+export function ArrayForm() {
+    const form = useForm({
+        defaultValues: { \\"title\\": \\"\\", \\"tags\\": [\\"\\"], \\"items\\": [{ \\"name\\": \\"\\", \\"value\\": 0 }] },
+        validators: {
+            onSubmit: formSchema,
+        },
+        onSubmit: async ({ value }) => {
+            // Handle form submission
+            console.log(value)
+        }
+    });
+
+
+
+    return (
+        <form
+            onSubmit={(e) => {
+                e.preventDefault()
+                form.handleSubmit()
+            }}
+            className=\\"space-y-8\\"
+        >
+            <FieldGroup>
+                <form.Field
+                    name=\\"title\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Title</FieldLabel>
+                            <Input
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(e.target.value)}
+                                aria-invalid={isInvalid}
+                            />
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+
+                <form.Field
+                    name=\\"items\\"
+                    mode=\\"array\\"
+                    children={(field) => {
+                        return (<FieldSet>
+                            <FieldGroup>
+                                {field.state.value.map((_, index) => (
+                                    <div key={index} className=\\"flex w-full items-end space-x-2\\">
+                                        <form.Field
+                                            name={\`items[\${index}].name\`}
+                                            children={(field) => {
+                                                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                                                return (<Field data-invalid={isInvalid}>
+                                                    <FieldLabel htmlFor={field.name}>Items Index Name</FieldLabel>
+                                                    <Input
+                                                        name={field.name}
+                                                        value={field.state.value}
+                                                        onBlur={field.handleBlur}
+                                                        onChange={(e) => field.handleChange(e.target.value)}
+                                                        aria-invalid={isInvalid}
+                                                    />
+                                                    {isInvalid && (
+                                                        <FieldError errors={field.state.meta.errors} />
+                                                    )}
+                                                </Field>)
+                                            }}
+                                        />
+                                        <form.Field
+                                            name={\`items[\${index}].value\`}
+                                            children={(field) => {
+                                                const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                                                return (<Field data-invalid={isInvalid}>
+                                                    <FieldLabel htmlFor={field.name}>Items Index Value</FieldLabel>
+                                                    <Input
+                                                        type='number'
+                                                        name={field.name}
+                                                        value={field.state.value}
+                                                        onBlur={field.handleBlur}
+                                                        onChange={(e) => field.handleChange(Number(e.target.value))}
+                                                        aria-invalid={isInvalid}
+                                                    />
+                                                    {isInvalid && (
+                                                        <FieldError errors={field.state.meta.errors} />
+                                                    )}
+                                                </Field>)
+                                            }}
+                                        />
+
+                                        <Button
+                                            type=\\"button\\"
+                                            size=\\"icon\\"
+                                            variant=\\"ghost\\"
+                                            onClick={() => field.removeValue(index)}
+                                        >
+                                            <XIcon className=\\"size-4\\" />
+                                        </Button>
+                                    </div>
+                                ))}
+                            </FieldGroup>
+                            <Button
+                                size=\\"sm\\"
+                                className=\\"mt-2\\"
+                                type=\\"button\\"
+                                onClick={() => field.pushValue({ \\"name\\": \\"\\", \\"value\\": 0 })}
+                            >
+                                <PlusIcon className=\\"size-4\\" />
+                                <span className=\\"ml-2\\">Add Item</span>
+                            </Button>
+                        </FieldSet>
+                        )
+                    }}
+                />
+
+
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > @tanstack/react-form > should generate form for schema with enum 1`] = `
+"\\"use client\\";
+
+import { useForm } from \\"@tanstack/react-form\\"
+import { EnumSchema } from \\"./schemas\\";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/registry/ui/select';
+import { Input } from '@/registry/ui/input';
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+    FieldSet,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = EnumSchema;
+
+export function EnumForm() {
+    const form = useForm({
+        defaultValues: { \\"status\\": \\"\\", \\"priority\\": \\"\\" },
+        validators: {
+            onSubmit: formSchema,
+        },
+        onSubmit: async ({ value }) => {
+            // Handle form submission
+            console.log(value)
+        }
+    });
+
+
+
+    return (
+        <form
+            onSubmit={(e) => {
+                e.preventDefault()
+                form.handleSubmit()
+            }}
+            className=\\"space-y-8\\"
+        >
+            <FieldGroup>
+                <form.Field
+                    name=\\"status\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Status</FieldLabel>
+                            <Select
+                                name={field.name}
+                                value={field.state.value}
+                                onValueChange={field.handleChange}>
+                                <SelectTrigger aria-invalid={isInvalid} className=\\"w-[180px]\\">
+                                    <SelectValue placeholder=\\"Select a value\\" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectItem value='active'>active</SelectItem>
+                                        <SelectItem value='inactive'>inactive</SelectItem>
+                                        <SelectItem value='pending'>pending</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+                <form.Field
+                    name=\\"priority\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Priority</FieldLabel>
+                            <Select
+                                name={field.name}
+                                value={field.state.value}
+                                onValueChange={field.handleChange}>
+                                <SelectTrigger aria-invalid={isInvalid} className=\\"w-[180px]\\">
+                                    <SelectValue placeholder=\\"Select a value\\" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectItem value='low'>low</SelectItem>
+                                        <SelectItem value='medium'>medium</SelectItem>
+                                        <SelectItem value='high'>high</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+                <form.Field
+                    name=\\"description\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Description</FieldLabel>
+                            <Input
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(e.target.value)}
+                                aria-invalid={isInvalid}
+                            />
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > @tanstack/react-form > should generate form for simple schema 1`] = `
+"\\"use client\\";
+
+import { useForm } from \\"@tanstack/react-form\\"
+import { SimpleSchema } from \\"./schemas\\";
+import { Input } from '@/registry/ui/input';
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+    FieldSet,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = SimpleSchema;
+
+export function SimpleForm() {
+    const form = useForm({
+        defaultValues: { \\"name\\": \\"\\", \\"email\\": \\"\\", \\"age\\": 0 },
+        validators: {
+            onSubmit: formSchema,
+        },
+        onSubmit: async ({ value }) => {
+            // Handle form submission
+            console.log(value)
+        }
+    });
+
+
+
+    return (
+        <form
+            onSubmit={(e) => {
+                e.preventDefault()
+                form.handleSubmit()
+            }}
+            className=\\"space-y-8\\"
+        >
+            <FieldGroup>
+                <form.Field
+                    name=\\"name\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Name</FieldLabel>
+                            <Input
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(e.target.value)}
+                                aria-invalid={isInvalid}
+                            />
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+                <form.Field
+                    name=\\"email\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+                            <Input
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(e.target.value)}
+                                aria-invalid={isInvalid}
+                            />
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+                <form.Field
+                    name=\\"age\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Age</FieldLabel>
+                            <Input
+                                type='number'
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(Number(e.target.value))}
+                                aria-invalid={isInvalid}
+                            />
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > @tanstack/react-form > should generate form for string field 1`] = `
+"\\"use client\\";
+
+import { useForm } from \\"@tanstack/react-form\\"
+import { StringSchema } from \\"./schemas\\";
+import { Input } from '@/registry/ui/input';
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+    FieldSet,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = StringSchema;
+
+export function StringField() {
+    const form = useForm({
+        defaultValues: { \\"name\\": \\"\\" },
+        validators: {
+            onSubmit: formSchema,
+        },
+        onSubmit: async ({ value }) => {
+            // Handle form submission
+            console.log(value)
+        }
+    });
+
+
+
+    return (
+        <form
+            onSubmit={(e) => {
+                e.preventDefault()
+                form.handleSubmit()
+            }}
+            className=\\"space-y-8\\"
+        >
+            <FieldGroup>
+                <form.Field
+                    name=\\"name\\"
+                    children={(field) => {
+                        const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+                        return (<Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Name</FieldLabel>
+                            <Input
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e) => field.handleChange(e.target.value)}
+                                aria-invalid={isInvalid}
+                            />
+                            {isInvalid && (
+                                <FieldError errors={field.state.meta.errors} />
+                            )}
+                        </Field>)
+                    }}
+                />
+
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > react-hook-form > should generate form for array field 1`] = `
+"\\"use client\\";
+
+import { zodResolver } from \\"@hookform/resolvers/zod\\";
+import { useForm, Controller } from \\"react-hook-form\\";
+import type { z } from \\"zod\\";
+import { ArraySchema } from \\"./schemas\\";
+import { useFieldArray } from 'react-hook-form';
+import { XIcon, PlusIcon } from \\"lucide-react\\";
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = ArraySchema;
+
+export function ArrayField() {
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {},
+    });
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        // Handle form submission
+        console.log(values)
+    };
+
+
+    const { fields, append, remove } = useFieldArray({
+        control: form.control,
+        name: \\"items\\",
+    });
+
+
+    return (
+        <form onSubmit={form.handleSubmit(onSubmit)} className=\\"space-y-8\\">
+            <FieldGroup>
+
+                <div>
+                    {fields.map((field, index) => (
+                        <div key={field.id} className=\\"flex w-full items-end space-x-2\\">
+                            <Controller
+                                name={\`items.\${index}.name\`}
+                                control={form.control}
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel htmlFor={field.name}>Items Index Name</FieldLabel>
+                                        <Input {...field} aria-invalid={fieldState.invalid} />
+                                        {fieldState.invalid && (
+                                            <FieldError errors={[fieldState.error]} />
+                                        )}
+                                    </Field>
+                                )}
+                            />
+                            <Controller
+                                name={\`items.\${index}.value\`}
+                                control={form.control}
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel htmlFor={field.name}>Items Index Value</FieldLabel>
+                                        <Input {...field} onChange={(e) => field.onChange(Number(e.target.value))} type='number' aria-invalid={fieldState.invalid} />
+                                        {fieldState.invalid && (
+                                            <FieldError errors={[fieldState.error]} />
+                                        )}
+                                    </Field>
+                                )}
+                            />
+
+                            <Button
+                                type=\\"button\\"
+                                size=\\"icon\\"
+                                variant=\\"ghost\\"
+                                onClick={() => remove(index)}
+                            >
+                                <XIcon className=\\"size-4\\" />
+                            </Button>
+                        </div>
+                    ))
+                    }
+                    <Button
+                        size=\\"sm\\"
+                        className=\\"mt-2\\"
+                        type=\\"button\\"
+                        onClick={() => append({ \\"name\\": \\"\\", \\"value\\": 0 })}
+                    >
+                        <PlusIcon className=\\"size-4\\" />
+                        <span className=\\"ml-2\\">Add Item</span>
+                    </Button>
+                </div>
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > react-hook-form > should generate form for boolean field 1`] = `
+"\\"use client\\";
+
+import { zodResolver } from \\"@hookform/resolvers/zod\\";
+import { useForm, Controller } from \\"react-hook-form\\";
+import type { z } from \\"zod\\";
+import { BooleanSchema } from \\"./schemas\\";
+import { Checkbox } from '@/registry/ui/checkbox';
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = BooleanSchema;
+
+export function BooleanField() {
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {},
+    });
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        // Handle form submission
+        console.log(values)
+    };
+
+
+
+    return (
+        <form onSubmit={form.handleSubmit(onSubmit)} className=\\"space-y-8\\">
+            <FieldGroup>
+                <Controller
+                    name=\\"isActive\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Is Active</FieldLabel>
+                            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > react-hook-form > should generate form for complex schema 1`] = `
+"\\"use client\\";
+
+import { zodResolver } from \\"@hookform/resolvers/zod\\";
+import { useForm, Controller } from \\"react-hook-form\\";
+import type { z } from \\"zod\\";
+import { ComplexSchema } from \\"./schemas\\";
+import { Input } from '@/registry/ui/input';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/registry/ui/select';
+import { useFieldArray } from 'react-hook-form';
+import { XIcon, PlusIcon } from \\"lucide-react\\";
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = ComplexSchema;
+
+export function ComplexForm() {
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {},
+    });
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        // Handle form submission
+        console.log(values)
+    };
+
+
+    const { fields, append, remove } = useFieldArray({
+        control: form.control,
+        name: \\"metadata\\",
+    });
+
+
+    return (
+        <form onSubmit={form.handleSubmit(onSubmit)} className=\\"space-y-8\\">
+            <FieldGroup>
+                <Controller
+                    name=\\"title\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Title</FieldLabel>
+                            <Input {...field} aria-invalid={fieldState.invalid} />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+                <Controller
+                    name=\\"description\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Description</FieldLabel>
+                            <Input {...field} aria-invalid={fieldState.invalid} />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+                <Controller
+                    name=\\"category\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Category</FieldLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <SelectTrigger className=\\"w-[180px]\\">
+                                    <SelectValue placeholder=\\"Select a value\\" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectItem value='tech'>tech</SelectItem>
+                                        <SelectItem value='business'>business</SelectItem>
+                                        <SelectItem value='lifestyle'>lifestyle</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+                <Controller
+                    name=\\"author.name\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Author Name</FieldLabel>
+                            <Input {...field} aria-invalid={fieldState.invalid} />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+                <Controller
+                    name=\\"author.email\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Author Email</FieldLabel>
+                            <Input {...field} aria-invalid={fieldState.invalid} />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+                <Controller
+                    name=\\"author.bio\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Author Bio</FieldLabel>
+                            <Input {...field} aria-invalid={fieldState.invalid} />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+
+                <div>
+                    {fields.map((field, index) => (
+                        <div key={field.id} className=\\"flex w-full items-end space-x-2\\">
+                            <Controller
+                                name={\`metadata.\${index}.key\`}
+                                control={form.control}
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel htmlFor={field.name}>Metadata Index Key</FieldLabel>
+                                        <Input {...field} aria-invalid={fieldState.invalid} />
+                                        {fieldState.invalid && (
+                                            <FieldError errors={[fieldState.error]} />
+                                        )}
+                                    </Field>
+                                )}
+                            />
+                            <Controller
+                                name={\`metadata.\${index}.value\`}
+                                control={form.control}
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel htmlFor={field.name}>Metadata Index Value</FieldLabel>
+                                        <Input {...field} aria-invalid={fieldState.invalid} />
+                                        {fieldState.invalid && (
+                                            <FieldError errors={[fieldState.error]} />
+                                        )}
+                                    </Field>
+                                )}
+                            />
+                            <Controller
+                                name={\`metadata.\${index}.type\`}
+                                control={form.control}
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel htmlFor={field.name}>Metadata Index Type</FieldLabel>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <SelectTrigger className=\\"w-[180px]\\">
+                                                <SelectValue placeholder=\\"Select a value\\" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectItem value='string'>string</SelectItem>
+                                                    <SelectItem value='number'>number</SelectItem>
+                                                    <SelectItem value='boolean'>boolean</SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                        {fieldState.invalid && (
+                                            <FieldError errors={[fieldState.error]} />
+                                        )}
+                                    </Field>
+                                )}
+                            />
+
+                            <Button
+                                type=\\"button\\"
+                                size=\\"icon\\"
+                                variant=\\"ghost\\"
+                                onClick={() => remove(index)}
+                            >
+                                <XIcon className=\\"size-4\\" />
+                            </Button>
+                        </div>
+                    ))
+                    }
+                    <Button
+                        size=\\"sm\\"
+                        className=\\"mt-2\\"
+                        type=\\"button\\"
+                        onClick={() => append({ \\"key\\": \\"\\", \\"value\\": \\"\\", \\"type\\": \\"\\" })}
+                    >
+                        <PlusIcon className=\\"size-4\\" />
+                        <span className=\\"ml-2\\">Add Item</span>
+                    </Button>
+                </div>
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > react-hook-form > should generate form for enum field 1`] = `
+"\\"use client\\";
+
+import { zodResolver } from \\"@hookform/resolvers/zod\\";
+import { useForm, Controller } from \\"react-hook-form\\";
+import type { z } from \\"zod\\";
+import { EnumSchema } from \\"./schemas\\";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/registry/ui/select';
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = EnumSchema;
+
+export function EnumField() {
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {},
+    });
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        // Handle form submission
+        console.log(values)
+    };
+
+
+
+    return (
+        <form onSubmit={form.handleSubmit(onSubmit)} className=\\"space-y-8\\">
+            <FieldGroup>
+                <Controller
+                    name=\\"status\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Status</FieldLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <SelectTrigger className=\\"w-[180px]\\">
+                                    <SelectValue placeholder=\\"Select a value\\" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectItem value='active'>active</SelectItem>
+                                        <SelectItem value='inactive'>inactive</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > react-hook-form > should generate form for nested schema 1`] = `
+"\\"use client\\";
+
+import { zodResolver } from \\"@hookform/resolvers/zod\\";
+import { useForm, Controller } from \\"react-hook-form\\";
+import type { z } from \\"zod\\";
+import { NestedSchema } from \\"./schemas\\";
+import { Input } from '@/registry/ui/input';
+import { Checkbox } from '@/registry/ui/checkbox';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/registry/ui/select';
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = NestedSchema;
+
+export function NestedForm() {
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {},
+    });
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        // Handle form submission
+        console.log(values)
+    };
+
+
+
+    return (
+        <form onSubmit={form.handleSubmit(onSubmit)} className=\\"space-y-8\\">
+            <FieldGroup>
+                <Controller
+                    name=\\"user.name\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>User Name</FieldLabel>
+                            <Input {...field} aria-invalid={fieldState.invalid} />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+                <Controller
+                    name=\\"user.email\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>User Email</FieldLabel>
+                            <Input {...field} aria-invalid={fieldState.invalid} />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+                <Controller
+                    name=\\"user.profile.bio\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>User Profile Bio</FieldLabel>
+                            <Input {...field} aria-invalid={fieldState.invalid} />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+                <Controller
+                    name=\\"user.profile.avatar\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>User Profile Avatar</FieldLabel>
+                            <Input {...field} aria-invalid={fieldState.invalid} />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+                <Controller
+                    name=\\"settings.notifications\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Settings Notifications</FieldLabel>
+                            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+                <Controller
+                    name=\\"settings.theme\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Settings Theme</FieldLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <SelectTrigger className=\\"w-[180px]\\">
+                                    <SelectValue placeholder=\\"Select a value\\" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectItem value='light'>light</SelectItem>
+                                        <SelectItem value='dark'>dark</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > react-hook-form > should generate form for number field 1`] = `
+"\\"use client\\";
+
+import { zodResolver } from \\"@hookform/resolvers/zod\\";
+import { useForm, Controller } from \\"react-hook-form\\";
+import type { z } from \\"zod\\";
+import { NumberSchema } from \\"./schemas\\";
+import { Input } from '@/registry/ui/input';
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = NumberSchema;
+
+export function NumberField() {
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {},
+    });
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        // Handle form submission
+        console.log(values)
+    };
+
+
+
+    return (
+        <form onSubmit={form.handleSubmit(onSubmit)} className=\\"space-y-8\\">
+            <FieldGroup>
+                <Controller
+                    name=\\"age\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Age</FieldLabel>
+                            <Input {...field} onChange={(e) => field.onChange(Number(e.target.value))} type='number' aria-invalid={fieldState.invalid} />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > react-hook-form > should generate form for schema with array 1`] = `
+"\\"use client\\";
+
+import { zodResolver } from \\"@hookform/resolvers/zod\\";
+import { useForm, Controller } from \\"react-hook-form\\";
+import type { z } from \\"zod\\";
+import { ArraySchema } from \\"./schemas\\";
+import { Input } from '@/registry/ui/input';
+import { useFieldArray } from 'react-hook-form';
+import { XIcon, PlusIcon } from \\"lucide-react\\";
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = ArraySchema;
+
+export function ArrayForm() {
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {},
+    });
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        // Handle form submission
+        console.log(values)
+    };
+
+
+    const { fields, append, remove } = useFieldArray({
+        control: form.control,
+        name: \\"items\\",
+    });
+
+
+    return (
+        <form onSubmit={form.handleSubmit(onSubmit)} className=\\"space-y-8\\">
+            <FieldGroup>
+                <Controller
+                    name=\\"title\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Title</FieldLabel>
+                            <Input {...field} aria-invalid={fieldState.invalid} />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+
+                <div>
+                    {fields.map((field, index) => (
+                        <div key={field.id} className=\\"flex w-full items-end space-x-2\\">
+                            <Controller
+                                name={\`items.\${index}.name\`}
+                                control={form.control}
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel htmlFor={field.name}>Items Index Name</FieldLabel>
+                                        <Input {...field} aria-invalid={fieldState.invalid} />
+                                        {fieldState.invalid && (
+                                            <FieldError errors={[fieldState.error]} />
+                                        )}
+                                    </Field>
+                                )}
+                            />
+                            <Controller
+                                name={\`items.\${index}.value\`}
+                                control={form.control}
+                                render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                        <FieldLabel htmlFor={field.name}>Items Index Value</FieldLabel>
+                                        <Input {...field} onChange={(e) => field.onChange(Number(e.target.value))} type='number' aria-invalid={fieldState.invalid} />
+                                        {fieldState.invalid && (
+                                            <FieldError errors={[fieldState.error]} />
+                                        )}
+                                    </Field>
+                                )}
+                            />
+
+                            <Button
+                                type=\\"button\\"
+                                size=\\"icon\\"
+                                variant=\\"ghost\\"
+                                onClick={() => remove(index)}
+                            >
+                                <XIcon className=\\"size-4\\" />
+                            </Button>
+                        </div>
+                    ))
+                    }
+                    <Button
+                        size=\\"sm\\"
+                        className=\\"mt-2\\"
+                        type=\\"button\\"
+                        onClick={() => append({ \\"name\\": \\"\\", \\"value\\": 0 })}
+                    >
+                        <PlusIcon className=\\"size-4\\" />
+                        <span className=\\"ml-2\\">Add Item</span>
+                    </Button>
+                </div>
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > react-hook-form > should generate form for schema with enum 1`] = `
+"\\"use client\\";
+
+import { zodResolver } from \\"@hookform/resolvers/zod\\";
+import { useForm, Controller } from \\"react-hook-form\\";
+import type { z } from \\"zod\\";
+import { EnumSchema } from \\"./schemas\\";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/registry/ui/select';
+import { Input } from '@/registry/ui/input';
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = EnumSchema;
+
+export function EnumForm() {
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {},
+    });
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        // Handle form submission
+        console.log(values)
+    };
+
+
+
+    return (
+        <form onSubmit={form.handleSubmit(onSubmit)} className=\\"space-y-8\\">
+            <FieldGroup>
+                <Controller
+                    name=\\"status\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Status</FieldLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <SelectTrigger className=\\"w-[180px]\\">
+                                    <SelectValue placeholder=\\"Select a value\\" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectItem value='active'>active</SelectItem>
+                                        <SelectItem value='inactive'>inactive</SelectItem>
+                                        <SelectItem value='pending'>pending</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+                <Controller
+                    name=\\"priority\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Priority</FieldLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <SelectTrigger className=\\"w-[180px]\\">
+                                    <SelectValue placeholder=\\"Select a value\\" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectItem value='low'>low</SelectItem>
+                                        <SelectItem value='medium'>medium</SelectItem>
+                                        <SelectItem value='high'>high</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+                <Controller
+                    name=\\"description\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Description</FieldLabel>
+                            <Input {...field} aria-invalid={fieldState.invalid} />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > react-hook-form > should generate form for simple schema 1`] = `
+"\\"use client\\";
+
+import { zodResolver } from \\"@hookform/resolvers/zod\\";
+import { useForm, Controller } from \\"react-hook-form\\";
+import type { z } from \\"zod\\";
+import { SimpleSchema } from \\"./schemas\\";
+import { Input } from '@/registry/ui/input';
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = SimpleSchema;
+
+export function SimpleForm() {
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {},
+    });
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        // Handle form submission
+        console.log(values)
+    };
+
+
+
+    return (
+        <form onSubmit={form.handleSubmit(onSubmit)} className=\\"space-y-8\\">
+            <FieldGroup>
+                <Controller
+                    name=\\"name\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Name</FieldLabel>
+                            <Input {...field} aria-invalid={fieldState.invalid} />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+                <Controller
+                    name=\\"email\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+                            <Input {...field} aria-invalid={fieldState.invalid} />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+                <Controller
+                    name=\\"age\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Age</FieldLabel>
+                            <Input {...field} onChange={(e) => field.onChange(Number(e.target.value))} type='number' aria-invalid={fieldState.invalid} />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
+
+exports[`Comprehensive Code Generation Tests > react-hook-form > should generate form for string field 1`] = `
+"\\"use client\\";
+
+import { zodResolver } from \\"@hookform/resolvers/zod\\";
+import { useForm, Controller } from \\"react-hook-form\\";
+import type { z } from \\"zod\\";
+import { StringSchema } from \\"./schemas\\";
+import { Input } from '@/registry/ui/input';
+import { Button } from \\"@/registry/ui/button\\";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+} from \\"@/registry/ui/field\\";
+
+const formSchema = StringSchema;
+
+export function StringField() {
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {},
+    });
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        // Handle form submission
+        console.log(values)
+    };
+
+
+
+    return (
+        <form onSubmit={form.handleSubmit(onSubmit)} className=\\"space-y-8\\">
+            <FieldGroup>
+                <Controller
+                    name=\\"name\\"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                            <FieldLabel htmlFor={field.name}>Name</FieldLabel>
+                            <Input {...field} aria-invalid={fieldState.invalid} />
+                            {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                            )}
+                        </Field>
+                    )}
+                />
+
+            </FieldGroup>
+            <Button type=\\"submit\\">Submit</Button>
+        </form>
+    )
+}
+"
+`;
