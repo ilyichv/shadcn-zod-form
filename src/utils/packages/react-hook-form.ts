@@ -60,13 +60,13 @@ import { useForm, Controller } from "react-hook-form";
 import type { z } from "zod";
 <%= schemaImport %>
 <%= imports %>
-import { Button } from "@/registry/ui/button"
+import { Button } from "@/registry/ui/button";
 import {
   Field,
   FieldError,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field"
+} from "@/registry/ui/field";
 
 const formSchema = <%= schema %>;
 
