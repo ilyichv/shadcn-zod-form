@@ -1,5 +1,11 @@
 # shadcn-zod-form
 
+## 0.1.1
+
+### Patch Changes
+
+- [#11](https://github.com/ilyichv/shadcn-zod-form/pull/11) [`4912b4c`](https://github.com/ilyichv/shadcn-zod-form/commit/4912b4cdeb7788300e844f3e087c4bad1f65925d) Thanks [@ilyichv](https://github.com/ilyichv)! - fix: field imports
+
 ## 0.1.0
 
 ### Minor Changes
