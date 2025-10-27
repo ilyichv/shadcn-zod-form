@@ -62,14 +62,14 @@ const form = `"use client";
 import { useForm } from "@tanstack/react-form"
 <%= schemaImport %>
 <%= imports %>
-import { Button } from "@/registry/ui/button"
+import { Button } from "@/registry/ui/button";
 import {
   Field,
   FieldError,
   FieldGroup,
   FieldLabel,
   FieldSet,
-} from "@/components/ui/field"
+} from "@/registry/ui/field";
 
 const formSchema = <%= schema %>;
 
