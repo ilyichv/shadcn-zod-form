@@ -31,7 +31,10 @@
 		"dev": "tsup --watch",
 		"build": "tsup",
 		"typecheck": "tsc --noEmit",
-		"lint": "pnpm biome check src"
+		"lint": "pnpm biome check src",
+		"test": "vitest",
+		"test:run": "vitest run",
+		"test:snapshot": "vitest run --reporter=verbose"
 	},
 	"license": "MIT",
 	"devDependencies": {
@@ -45,9 +48,11 @@
 		"@types/lodash.template": "^4.5.3",
 		"@types/node": "^22.5.4",
 		"@types/prompts": "^2.4.9",
+		"@vitest/snapshot": "^2.0.0",
 		"tsup": "^8.2.4",
 		"type-fest": "^4.26.1",
-		"typescript": "^5.5.4"
+		"typescript": "^5.5.4",
+		"vitest": "^2.0.0"
 	},
 	"dependencies": {
 		"chalk": "^5.3.0",
