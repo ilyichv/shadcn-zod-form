@@ -1,5 +1,7 @@
 # shadcn-zod-form
 
+<img width="2908" height="913" alt="image" src="https://github.com/user-attachments/assets/9b64abe9-6130-42b4-8a9e-538219f01663" />
+
 Generate [shadcn/ui](https://ui.shadcn.com/) forms from [Zod](https://github.com/colinhacks/zod) schemas.
 
 ## Features
